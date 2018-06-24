@@ -1,5 +1,6 @@
 import React from 'react';
 
+// receives three arugments to provide a <li> with relevant information
 const ListItem = ({source, quote, context}) => {
   return (
     <li>

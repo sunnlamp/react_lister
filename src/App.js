@@ -7,9 +7,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // flag to check if the content is loading
       isLoaded: false,
+      // array to hold data the AJAX request returns
       quotes: [],
+      // starts the current page at 1 for paginatin
       currentPage: 1,
+      // sets the quotes per page
       quotesPerPage: 15
     };
 
@@ -28,6 +32,7 @@ class App extends Component {
       .then((data) => {
         this.setState({
           isLoaded: true,
+          // shuffle method from underscore to mix up the data
           quotes: _.shuffle(data)
         })
       })
@@ -35,8 +40,9 @@ class App extends Component {
 
   render() {
     const { isLoaded, quotes, currentPage, quotesPerPage } = this.state;
-
+      // will provide the file index of the quotes for manipulating pagination
       const indexOfLastQuote = currentPage * quotesPerPage;
+      // will provide the position of the first quote on a given page
       const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
       // const currentQuotes = _.toArray(this.state.quotes).slice(indexOfFirstQuote, indexOfLastQuote);
 
@@ -45,6 +51,8 @@ class App extends Component {
         pageNumbers.push(i);
       }
 
+      // will render the total amount of page numbers based on
+      // the amount of data retreived
       const renderPageNumbers = pageNumbers.map(number => {
         return (
           <button
@@ -58,6 +66,7 @@ class App extends Component {
       });
 
       if (!isLoaded) {
+        // Provides loading message while AJAX request acquires daata
         return <div>Loading..</div>
       } else {
         return (
