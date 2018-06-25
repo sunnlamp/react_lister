@@ -2,6 +2,7 @@ import _ from 'underscore';
 import React, { Component } from 'react';
 import './App.css';
 import Pagination from './components/Pagination';
+import SearchBar from './components/SearchBar';
 
 const BASEURL = "https://www.omdbapi.com/?s=";
 const APIKEY =  "&apikey=trilogy";
@@ -13,7 +14,7 @@ class App extends Component {
       // flag to check if the content is loading
       isLoaded: false,
       // default search term
-      searchTerm: "The Thing",
+      searchTerm: "",
       // array to hold data the AJAX request returns
       movies: [],
       // starts the current page at 1 for paginatin
@@ -23,24 +24,42 @@ class App extends Component {
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
+    this.searchMovies = this.searchMovies.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.handleMovieQuery = this.handleMovieQuery.bind(this);
   }
 
+  // will report the id of the page to change the pagination set
   handlePageClick(event) {
     this.setState({
       currentPage: Number(event.target.id)
     })
   }
 
+  // sends a query term into the handleMovieQuery function
   searchMovies(query) {
-
+    this.handleMovieQuery(query);
   }
 
+  // changes the searchTerm value
+  handleInputChange(event) {
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  // helper method for the onClick event for movie search
   handleSearchSubmit(event) {
     event.preventDefault();
+    this.searchMovies(this.state.searchTerm);
   }
 
-  componentDidMount() {
-    fetch(BASEURL + "The Thing" + APIKEY)
+  // queries OMDB for a search
+  handleMovieQuery(query) {
+    fetch(BASEURL + query + APIKEY)
       .then(response => response.json())
       .then((data) => {
         console.log("this is the data" + data.Search);
@@ -52,6 +71,11 @@ class App extends Component {
         })
         console.log(data.Search);
       })
+  }
+
+  // will provide an inital query and return the results
+  componentDidMount() {
+    this.searchMovies("The Thing");
   }
 
   render() {
@@ -81,12 +105,21 @@ class App extends Component {
         );
       });
 
+      <div>
+
+      </div>
+
       if (!isLoaded) {
         // Provides loading message while AJAX request acquires daata
         return <div>Loading..</div>
       } else {
         return (
           <div>
+            <SearchBar
+              term={this.searchMovies}
+              handleInputChange={this.handleInputChange}
+              handleSearchSubmit={this.handleSearchSubmit}
+            />
             <Pagination
               onPageSelect={selectedPage => this.setState({currentPage})}
               currentPage={currentPage}

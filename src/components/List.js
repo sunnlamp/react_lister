@@ -17,7 +17,7 @@ const List = (props) => {
   })
 
   return (
-    <ul>
+    <ul className="list-group">
       {items}
     </ul>
   )

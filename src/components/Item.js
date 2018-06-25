@@ -3,9 +3,9 @@ import React from 'react';
 // receives three arugments to provide a <li> with relevant information
 const Item = ({title, year, poster}) => {
   return (
-    <li>
+    <li className="list-group-item">
       <p>{title} from {year}.</p>
-      <img src={poster}/>
+      <img className="img-thumbnail" src={poster}/>
     </li>
   )
 }
