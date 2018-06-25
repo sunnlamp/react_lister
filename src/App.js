@@ -96,6 +96,7 @@ class App extends Component {
       const renderPageNumbers = pageNumbers.map(number => {
         return (
           <button
+            className="btn"
             key={number}
             id={number}
             onClick={this.handlePageClick}
