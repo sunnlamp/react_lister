@@ -5,7 +5,7 @@ import Pagination from './components/Pagination';
 import SearchBar from './components/SearchBar';
 
 const BASEURL = "https://www.omdbapi.com/?s=";
-const APIKEY =  "&apikey=";
+const APIKEY =  "&apikey=2730dd19";
 
 class App extends Component {
   constructor(props) {
