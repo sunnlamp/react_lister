@@ -1,19 +1,17 @@
 import _ from 'underscore';
 import React from 'react';
-import QuotesList from './QuotesList';
+import List from './List';
 
-const Pagination = ({currentPage, quotesPerPage, lastQuoteIndex,
-  firstQuoteIndex, quotes, onPageSelect}) => {
-  const currentQuotes = _.toArray(quotes).slice(firstQuoteIndex, lastQuoteIndex);
-
+const Pagination = ({currentPage, quotesPerPage, lastMovieIndex,
+  firstMovieIndex, movies, onPageSelect}) => {
+  const currentMovies = movies.slice(firstMovieIndex, lastMovieIndex);
   // will provide a set amount of data to the QuotesList component according
   // to the page set
   return (
     <div>
-      <QuotesList
-        quotes={currentQuotes}
+      <List
+        movies={currentMovies}
       />
-
     </div>
   )
 }

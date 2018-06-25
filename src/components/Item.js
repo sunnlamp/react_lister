@@ -1,12 +1,13 @@
 import React from 'react';
 
 // receives three arugments to provide a <li> with relevant information
-const ListItem = ({source, quote, context}) => {
+const Item = ({title, year, poster}) => {
   return (
     <li>
-      <p>{source} from {context}. "{quote}" </p>
+      <p>{title} from {year}.</p>
+      <img src={poster}/>
     </li>
   )
 }
 
-export default ListItem;
+export default Item;

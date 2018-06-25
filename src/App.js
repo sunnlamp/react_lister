@@ -3,18 +3,23 @@ import React, { Component } from 'react';
 import './App.css';
 import Pagination from './components/Pagination';
 
+const BASEURL = "https://www.omdbapi.com/?s=";
+const APIKEY =  "&apikey=trilogy";
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // flag to check if the content is loading
       isLoaded: false,
+      // default search term
+      searchTerm: "The Thing",
       // array to hold data the AJAX request returns
-      quotes: [],
+      movies: [],
       // starts the current page at 1 for paginatin
       currentPage: 1,
-      // sets the quotes per page
-      quotesPerPage: 15
+      // sets the movies per page
+      moviesPerPage: 5
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -26,28 +31,39 @@ class App extends Component {
     })
   }
 
+  searchMovies(query) {
+
+  }
+
+  handleSearchSubmit(event) {
+    event.preventDefault();
+  }
+
   componentDidMount() {
-    fetch("https://gist.githubusercontent.com/anonymous/8f61a8733ed7fa41c4ea/raw/1e90fd2741bb6310582e3822f59927eb535f6c73/quotes.json")
+    fetch(BASEURL + "The Thing" + APIKEY)
       .then(response => response.json())
       .then((data) => {
+        console.log("this is the data" + data.Search);
         this.setState({
           isLoaded: true,
-          // shuffle method from underscore to mix up the data
-          quotes: _.shuffle(data)
+          // OMDB only allows the return of 10 results without
+          // additional queries
+          movies: data.Search
         })
+        console.log(data.Search);
       })
   }
 
   render() {
-    const { isLoaded, quotes, currentPage, quotesPerPage } = this.state;
+    const { isLoaded, movies, currentPage, moviesPerPage } = this.state;
       // will provide the file index of the quotes for manipulating pagination
-      const indexOfLastQuote = currentPage * quotesPerPage;
+      const indexOfLastMovie = currentPage * moviesPerPage;
       // will provide the position of the first quote on a given page
-      const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
+      const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
       // const currentQuotes = _.toArray(this.state.quotes).slice(indexOfFirstQuote, indexOfLastQuote);
 
       const pageNumbers = [];
-      for (let i = 1; i <= Math.ceil(quotes.length / quotesPerPage); i++) {
+      for (let i = 1; i <= Math.ceil(movies.length / moviesPerPage); i++) {
         pageNumbers.push(i);
       }
 
@@ -74,10 +90,10 @@ class App extends Component {
             <Pagination
               onPageSelect={selectedPage => this.setState({currentPage})}
               currentPage={currentPage}
-              quotesPerPage={quotesPerPage}
-              lastQuoteIndex={indexOfLastQuote}
-              firstQuoteIndex={indexOfFirstQuote}
-              quotes={quotes}
+              moviesPerPage={moviesPerPage}
+              lastMovieIndex={indexOfLastMovie}
+              firstMovieIndex={indexOfFirstMovie}
+              movies={movies}
             />
             <div>{renderPageNumbers}</div>
           </div>
